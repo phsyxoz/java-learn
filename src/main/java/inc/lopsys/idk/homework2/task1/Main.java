@@ -11,6 +11,7 @@
 package inc.lopsys.idk.homework2.task1;
 
 public class Main {
+
     public static void main(String[] args) {
 
         Integer[] array1 = {3, 5, 7};
