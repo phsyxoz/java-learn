@@ -6,6 +6,8 @@
 
 package inc.lopsys.idk.homework2.task2;
 
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -15,7 +17,7 @@ public class Main {
 
         try (Scanner input = new Scanner(System.in)) {
 
-            HashMap<Integer, Integer> arrayNums = new HashMap<>();
+            HashMap<Integer, List<Integer>> arrayNums = new HashMap<>();
             System.out.print("Введите размер массива: ");
             int sizeArrayNums = input.nextInt();
 
@@ -29,7 +31,7 @@ public class Main {
                 if (valueArrayNums < Math.pow(-10, 9) || valueArrayNums > Math.pow(10, 9)) {
                     throw new IllegalArgumentException("\nОшибка: Введите целые числа. \nДиапозон одного числа от -1000000000 до 1000000000");
                 }
-                arrayNums.put(valueArrayNums, i);
+                arrayNums.computeIfAbsent(valueArrayNums, k -> new ArrayList<>()).add(i);
             }
 
             System.out.print("Введите цель: ");
@@ -43,14 +45,26 @@ public class Main {
         }
     }
 
-    public static void findSumArray(HashMap<Integer, Integer> arrayNums, int targetSumArray) {
+    public static void findSumArray(HashMap<Integer, List<Integer>> arrayNums, int targetSumArray) {
 
         for (Integer firstNum : arrayNums.keySet()) {
             int secondNum = targetSumArray - firstNum;
-            if (arrayNums.containsKey(secondNum) && arrayNums.get(firstNum) != arrayNums.get(secondNum)) {
-                System.out.print("Найденная пара: [" + arrayNums.get(firstNum) + ", " + arrayNums.get(secondNum) + "]");
-                return;
+
+            if (arrayNums.containsKey(secondNum)) {
+                List<Integer> index1 = arrayNums.get(firstNum);
+                List<Integer> index2 = arrayNums.get(secondNum);
+
+                for (int i : index1) {
+                    for (int j : index2) {
+                        if (i != j) {
+                            System.out.print("Найденная пара: [" + i + ", " + j + "]");
+                            return;
+                        }
+                    }
+                }
+
             }
+
         }
 
         System.out.print("Пара не найдена!");
