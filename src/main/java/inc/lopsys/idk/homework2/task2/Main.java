@@ -6,8 +6,6 @@
 
 package inc.lopsys.idk.homework2.task2;
 
-import java.lang.reflect.Array;
-import java.util.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -17,7 +15,7 @@ public class Main {
 
         try (Scanner input = new Scanner(System.in)) {
 
-            HashMap<Integer, List<Integer>> arrayNums = new HashMap<>();
+            HashMap<Integer, Integer> arrayNums = new HashMap<>();
             System.out.print("Введите размер массива: ");
             int sizeArrayNums = input.nextInt();
 
@@ -31,7 +29,7 @@ public class Main {
                 if (valueArrayNums < Math.pow(-10, 9) || valueArrayNums > Math.pow(10, 9)) {
                     throw new IllegalArgumentException("\nОшибка: Введите целые числа. \nДиапозон одного числа от -1000000000 до 1000000000");
                 }
-                arrayNums.computeIfAbsent(valueArrayNums, k -> new ArrayList<>()).add(i);
+                arrayNums.put(valueArrayNums, i);
             }
 
             System.out.print("Введите цель: ");
@@ -40,34 +38,27 @@ public class Main {
                 throw new IllegalArgumentException("\nОшибка: Введите одно целое число. \nДиапозон одного числа от -1000000000 до 1000000000");
             }
 
-            findSumArray(arrayNums, targetSumArray);
+            int[] result = findSumArray(arrayNums, targetSumArray);
+
+            System.out.print("Пара найдена: [" + result[0] + ", " + result[1] + "]");
 
         }
     }
 
-    public static void findSumArray(HashMap<Integer, List<Integer>> arrayNums, int targetSumArray) {
+    public static int[] findSumArray(HashMap<Integer, Integer> arrayNums, int targetSumArray) {
 
         for (Integer firstNum : arrayNums.keySet()) {
-            int secondNum = targetSumArray - firstNum;
+            int findNum = targetSumArray - firstNum;
 
-            if (arrayNums.containsKey(secondNum)) {
-                List<Integer> index1 = arrayNums.get(firstNum);
-                List<Integer> index2 = arrayNums.get(secondNum);
+            for (int i = 0; i < arrayNums.size(); i++) {
 
-                for (int i : index1) {
-                    for (int j : index2) {
-                        if (i != j) {
-                            System.out.print("Найденная пара: [" + i + ", " + j + "]");
-                            return;
-                        }
-                    }
+                if (arrayNums.containsKey(findNum)) {
+                    return new int[] { arrayNums.get(findNum), i };
                 }
-
             }
-
         }
 
-        System.out.print("Пара не найдена!");
+        throw new IllegalArgumentException("Пара не найдена!");
 
     }
 }

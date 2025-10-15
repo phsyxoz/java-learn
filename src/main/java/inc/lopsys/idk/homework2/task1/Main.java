@@ -14,14 +14,38 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Integer[] array1 = {3, 5, 7};
-        Integer[] array2 = {2, 4, 6, 8};
+        Integer[] array1 = {8, 6, 4};
+        Integer[] array2 = {1, 100, -200, 5};
 
-        if (array1[0] > array2[0] & array1[array1.length - 1] < array2[array2.length - 1]) {
-            System.out.println(true);
+        int minNumArray1 = array1[0];
+        int maxNumArray1 = array1[0];
+
+        int minNumArray2 = array2[0];
+        int maxNumArray2 = array2[0];
+
+        for (int i = 1; i < array1.length; i++) {
+            if (array1[i] < minNumArray1) {
+                minNumArray1 = array1[i];
+            }
+            if (array1[i] > maxNumArray1) {
+                maxNumArray1 = array1[i];
+            }
         }
-        else {
+
+        for (int i = 1; i < array2.length; i++) {
+            if (array2[i] < minNumArray2) {
+                minNumArray2 = array2[i];
+            }
+            if (array2[i] > maxNumArray2) {
+                maxNumArray2 = array2[i];
+            }
+        }
+
+        if (minNumArray1 > minNumArray2 & maxNumArray1 < maxNumArray2) {
+            System.out.println(true);
+        } else {
             System.out.println(false);
         }
+
     }
 }
