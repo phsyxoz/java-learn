@@ -15,27 +15,26 @@ public class Main {
 
         try (Scanner input = new Scanner(System.in)) {
 
-            HashMap<Integer, Integer> arrayNums = new HashMap<>();
-            System.out.print("Введите размер массива: ");
-            int sizeArrayNums = input.nextInt();
+            System.out.print("Введите элементы массива через пробел: ");
+            String inputStr = input.nextLine();
+            String[] inputArray = inputStr.split(" ");
+            int[] arrayNums = new int[inputArray.length];
 
-            if (sizeArrayNums < 2 || sizeArrayNums > Math.pow(10, 4)) {
-                throw new IllegalArgumentException("\nОшибка: Введите одно целое число. \nДиапозон одного числа от 2 до 10000");
+            for (int i = 0; i < inputArray.length; i++) {
+                if (arrayNums[i] < Math.pow(-10, 9) || arrayNums[i] > Math.pow(10, 9)) {
+                    throw new IllegalArgumentException("\nОшибка: Диапазон одного числа от -1000000000 до 1000000000");
+                }
+                arrayNums[i] = Integer.parseInt(inputArray[i]);
             }
 
-            System.out.print("Введите элементы массива: ");
-            for (int i = 0; i < sizeArrayNums; i++) {
-                int valueArrayNums = input.nextInt();
-                if (valueArrayNums < Math.pow(-10, 9) || valueArrayNums > Math.pow(10, 9)) {
-                    throw new IllegalArgumentException("\nОшибка: Введите целые числа. \nДиапозон одного числа от -1000000000 до 1000000000");
-                }
-                arrayNums.put(valueArrayNums, i);
+            if (inputArray.length < 2 || inputArray.length > Math.pow(10, 4)) {
+                throw new IllegalArgumentException("\nОшибка: Диапазон массива от 2 до 10000");
             }
 
             System.out.print("Введите цель: ");
             int targetSumArray = input.nextInt();
             if (targetSumArray < Math.pow(-10, 9) || targetSumArray > Math.pow(10, 9)) {
-                throw new IllegalArgumentException("\nОшибка: Введите одно целое число. \nДиапозон одного числа от -1000000000 до 1000000000");
+                throw new IllegalArgumentException("\nОшибка: Введите одно целое число. \nДиапазон одного числа от -1000000000 до 1000000000");
             }
 
             int[] result = findSumArray(arrayNums, targetSumArray);
@@ -45,18 +44,20 @@ public class Main {
         }
     }
 
-    public static int[] findSumArray(HashMap<Integer, Integer> arrayNums, int targetSumArray) {
+    public static int[] findSumArray(int[] arrayNums, int targetSumArray) {
 
-        for (Integer firstNum : arrayNums.keySet()) {
-            int findNum = targetSumArray - firstNum;
+        HashMap<Integer, Integer> twoNumForSum = new HashMap<>();
 
-            for (int i = 0; i < arrayNums.size(); i++) {
+        for (int i = 0; i < arrayNums.length; i++) {
+            int findNum = targetSumArray - arrayNums[i];
 
-                if (arrayNums.containsKey(findNum)) {
-                    return new int[] { arrayNums.get(findNum), i };
-                }
+            if (twoNumForSum.containsKey(findNum)) {
+                return new int[] { twoNumForSum.get(findNum), i };
             }
+
+            twoNumForSum.put(arrayNums[i], i);
         }
+
 
         throw new IllegalArgumentException("Пара не найдена!");
 
