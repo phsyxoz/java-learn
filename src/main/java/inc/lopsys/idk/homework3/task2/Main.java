@@ -6,10 +6,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Main {
+    private static int side, width, height;
+
     static Arguments[] rectangles() {
         return new Arguments[]{
-            Arguments.of(new Rectangle(1, 1)),
-            Arguments.of(new Square(1))
+            Arguments.of(new Rectangle(width, height)),
+            Arguments.of(new Square(side))
         };
     }
     @ParameterizedTest
@@ -23,19 +25,18 @@ public class Main {
 }
 
 class Rectangle {
-    private int width;
-    private int height;
+    private int width, height;
 
-    public Rectangle(int height, int width){
+    public Rectangle(int height, int width) {
         this.height = height;
         this.width = width;
     }
 
-    void setWidth(int width) {
+    public void setWidth(int width) {
         this.width = width;
     }
 
-    void setHeight(int height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
@@ -51,12 +52,13 @@ class Square extends Rectangle {
     }
 
     @Override
-    void setWidth(int side) {
-        super.setWidth(side);
+    public void setWidth(int width) {
+        super.setWidth(width);
     }
 
     @Override
-    void setHeight(int side) {
-        super.setHeight(side);
+    public void setHeight(int width) {
+        super.setHeight(width);
     }
+
 }
