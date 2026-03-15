@@ -33,18 +33,22 @@ public final class PopularCommandExecutor {
 
                 connection.execute(command);
                 System.out.println("Команда успешно выполнена.");
-                return; // Успех — выходим
-            } catch (ConnectionException e) {
+                return;
+            }
+            catch (ConnectionException e) {
                 lastException = e;
                 System.err.printf("Попытка %d: %s%n", attempt, e.getMessage());
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 lastException = e;
                 System.err.printf("Непредвиденная ошибка: %s%n", e.getMessage());
-            } finally {
+            }
+            finally {
                 if (connection != null) {
                     try {
                         connection.close();
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         System.err.println("Ошибка при отключении: " + e.getMessage());
                     }
                 }
