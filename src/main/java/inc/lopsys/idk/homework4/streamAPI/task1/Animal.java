@@ -1,4 +1,4 @@
-package inc.lopsys.idk.homework4.task9;
+package inc.lopsys.idk.homework4.streamAPI.task1;
 
 public record Animal(
     String name,

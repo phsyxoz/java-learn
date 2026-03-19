@@ -1,8 +1,9 @@
-package inc.lopsys.idk.homework4.task9;
+package inc.lopsys.idk.homework4.streamAPI.task3;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,11 +17,14 @@ public class Main {
         animals.add(new Animal("ВОРОБЕЙ", Animal.Type.BIRD, Animal.Sex.M, 1, 10, 300, false));
         animals.add(new Animal("ПУМА", Animal.Type.CAT, Animal.Sex.F, 1, 160, 40000, true));
 
-        List<Animal> sortedAnimalsWeight = animals.stream()
-            .sorted(Comparator.comparing(Animal::weight).reversed())
-            .toList();
-        System.out.println("По весу (Убывание): ");
-        sortedAnimalsWeight.forEach(animal ->
-            System.out.println(animal.name() + " (" + animal.weight() + " г.) "));
+        Map<Animal.Type, Long> countByType = animals.stream()
+            .collect(Collectors.groupingBy(
+                Animal::type,
+                Collectors.counting()
+            ));
+
+        System.out.println("По категории (Количество): ");
+        countByType.forEach((type, count) ->
+            System.out.println(type + ": " + count + " шт."));
     }
 }

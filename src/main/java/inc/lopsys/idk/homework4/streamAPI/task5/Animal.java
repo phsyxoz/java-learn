@@ -1,4 +1,4 @@
-package inc.lopsys.idk.homework4.task8;
+package inc.lopsys.idk.homework4.streamAPI.task5;
 
 public record Animal(
     String name,
@@ -18,6 +18,7 @@ public record Animal(
         this.weight = weight;
         this.bites = bites;
     }
+
     enum Type {
         CAT, DOG, BIRD, FISH, SPIDER
     }

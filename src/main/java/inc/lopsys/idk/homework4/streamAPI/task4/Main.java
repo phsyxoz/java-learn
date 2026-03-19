@@ -1,8 +1,9 @@
-package inc.lopsys.idk.homework4.task8;
+package inc.lopsys.idk.homework4.streamAPI.task4;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.OptionalInt;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,11 +17,19 @@ public class Main {
         animals.add(new Animal("ВОРОБЕЙ", Animal.Type.BIRD, Animal.Sex.M, 1, 10, 300, false));
         animals.add(new Animal("ПУМА", Animal.Type.CAT, Animal.Sex.F, 1, 160, 40000, true));
 
-        List<Animal> sortedAnimalsHeight = animals.stream()
-                .sorted(Comparator.comparing(Animal::height))
-                .toList();
-        System.out.println("По высоте (Возрастание): ");
-        sortedAnimalsHeight.forEach(animal ->
-            System.out.println(animal.name() + " (" + animal.height() + " см.) "));
+        OptionalInt maxLength = animals.stream()
+            .mapToInt(animal -> animal.name().length())
+            .max();
+
+        if (maxLength.isPresent()) {
+            List<Animal> longestNamedAnimals = animals.stream()
+                .filter(animal -> animal.name().length() == maxLength.getAsInt())
+                .collect(Collectors.toList());
+
+            System.out.println("Животные с самым длинным именем (" + maxLength.getAsInt() + " Символов):");
+            longestNamedAnimals.forEach(animal ->
+                System.out.println(animal.name())
+            );
+        }
     }
 }
