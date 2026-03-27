@@ -1,5 +1,8 @@
 package inc.lopsys.idk.homework3.task1;
 
+//Калькулятор выражений. Напишите иерархию классов для вычисления
+//математических выражений.
+//Разбор строковых представлений выражений не требуется, достаточно чтобы работал код.
 public class Main {
     public static void main(String[] args) {
         var two = new Expr.Constant(2);

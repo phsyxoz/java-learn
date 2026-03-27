@@ -1,9 +1,9 @@
 package inc.lopsys.idk.homework4.streamAPI.task7;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.OptionalInt;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,19 +17,17 @@ public class Main {
         animals.add(new Animal("ВОРОБЕЙ", Animal.Type.BIRD, Animal.Sex.F, 1, 10, 300, false));
         animals.add(new Animal("ПУМА", Animal.Type.CAT, Animal.Sex.F, 10, 160, 40000, true));
 
-        OptionalInt olderAnimal = animals.stream()
-            .mapToInt(Animal::age)
-            .max();
+        int k = 3;
 
-        if (olderAnimal.isPresent()) {
-            List<Animal> maxAgeAnimals = animals.stream()
-                .filter(animal -> animal.age() == olderAnimal.getAsInt())
-                .collect(Collectors.toList());
+        List<Animal> sortedAnimalsAge = animals.stream()
+            .sorted(Comparator.comparing(Animal::age).reversed())
+            .toList();
 
-            System.out.println("Самые старые животные (" + olderAnimal.getAsInt() + " лет):");
-            maxAgeAnimals.forEach(animal ->
-                System.out.println(animal.name())
-            );
-        }
+        Optional<Animal> oldAnimalK = sortedAnimalsAge.stream()
+            .limit(k)
+            .skip(k - 1)
+            .findFirst();
+
+            System.out.println(k + "-е по возрасту (Убывание): " + oldAnimalK.get().name() + " (" + oldAnimalK.get().age() +")");
     }
 }

@@ -1,64 +1,31 @@
 package inc.lopsys.idk.homework3.task2;
 
+//    Допустим, у вас есть классы Rectangle и Square с методами setWidth(...), setHeight(...) и calculateArea()
+//    Найдите решение проблемы, удовлетворяющее следующим ограничениям:
+//      Не нарушается математическая логика, то есть квадрат является прямоугольником с точки зрения типизации
+//      При этом не нарушается принцип подстановки Лисков
+//      Все так же присутствует понятие высоты и ширины, а также операция вычисления площади
+//      Реализация класса Rectangle не должна предполагать существование класса Square, иными словами, не нарушен принцип открытости-закрытости
+// Пояснение принципа Лисков: дочерний класс не должен изменять принцип работы родительского, не должна нарушаться логика
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Main {
-    private static int side, width, height;
-
     static Arguments[] rectangles() {
         return new Arguments[]{
-            Arguments.of(new Rectangle(width, height)),
-            Arguments.of(new Square(side))
+            Arguments.of(new Rectangle(5, 6)),
+            Arguments.of(new Square(7))
         };
     }
+
     @ParameterizedTest
     @MethodSource("rectangles")
     void rectangleArea(Rectangle rect) {
-        rect.setWidth(20);
-        rect.setHeight(10);
+        Rectangle result = rect.setWidth(10).setHeight(20);
 
-        assertThat(rect.calculateArea()).isEqualTo(200.0);
+        assertThat(result.calculateArea()).isEqualTo(200.0);
     }
-}
-
-class Rectangle {
-    private int width, height;
-
-    public Rectangle(int height, int width) {
-        this.height = height;
-        this.width = width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    double calculateArea() {
-        return width * height;
-    }
-}
-
-class Square extends Rectangle {
-
-    public Square(int side) {
-        super(side, side);
-    }
-
-    @Override
-    public void setWidth(int width) {
-        super.setWidth(width);
-    }
-
-    @Override
-    public void setHeight(int width) {
-        super.setHeight(width);
-    }
-
 }

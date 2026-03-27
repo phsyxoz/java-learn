@@ -20,10 +20,7 @@ public final class PopularCommandExecutor {
         Exception lastException = null;
 
         for (int attempt = 1; attempt <= maxAttempts; attempt++) {
-            Connection connection = null;
-
-            try {
-                connection = manager.getConnection();
+            try (Connection connection = manager.getConnection()) {
                 String connType = (connection instanceof StableConnection)
                     ? "Стабильное"
                     : "Проблемное";
@@ -34,24 +31,12 @@ public final class PopularCommandExecutor {
                 connection.execute(command);
                 System.out.println("Команда успешно выполнена.");
                 return;
-            }
-            catch (ConnectionException e) {
+            } catch (ConnectionException e) {
                 lastException = e;
                 System.err.printf("Попытка %d: %s%n", attempt, e.getMessage());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 lastException = e;
                 System.err.printf("Непредвиденная ошибка: %s%n", e.getMessage());
-            }
-            finally {
-                if (connection != null) {
-                    try {
-                        connection.close();
-                    }
-                    catch (Exception e) {
-                        System.err.println("Ошибка при отключении: " + e.getMessage());
-                    }
-                }
             }
         }
 

@@ -2,7 +2,8 @@ package inc.lopsys.idk.homework4.streamAPI.task17;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.OptionalDouble;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -26,21 +27,23 @@ public class Main {
 
     public static boolean biteOften(List<Animal> animals) {
 
-        long totalDogs = animals.stream()
-            .filter(animal -> animal.type() == Animal.Type.DOG)
-            .count();
+        Map<Animal.Type, Long> totalCounts = animals.stream()
+            .collect(Collectors.groupingBy(
+                Animal::type,
+                Collectors.counting()
+            ));
 
-        long bitingDogs = animals.stream()
-            .filter(animal -> animal.type() == Animal.Type.DOG && animal.bites())
-            .count();
+        Map<Animal.Type, Long> bitingCounts = animals.stream()
+            .filter(Animal::bites)
+            .collect(Collectors.groupingBy(
+                Animal::type,
+                Collectors.counting()
+            ));
 
-        long totalSpiders = animals.stream()
-            .filter(animal -> animal.type() == Animal.Type.SPIDER)
-            .count();
-
-        long bitingSpiders = animals.stream()
-            .filter(animal -> animal.type() == Animal.Type.SPIDER && animal.bites())
-            .count();
+        Long totalDogs = totalCounts.getOrDefault(Animal.Type.DOG, 0L);
+        Long bitingDogs = bitingCounts.getOrDefault(Animal.Type.DOG, 0L);
+        Long totalSpiders = totalCounts.getOrDefault(Animal.Type.SPIDER, 0L);
+        Long bitingSpiders = bitingCounts.getOrDefault(Animal.Type.SPIDER, 0L);
 
         if (totalDogs == 0 || totalSpiders == 0) {
             return false;
