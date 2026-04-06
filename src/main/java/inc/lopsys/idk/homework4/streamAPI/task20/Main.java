@@ -3,7 +3,6 @@ package inc.lopsys.idk.homework4.streamAPI.task20;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {

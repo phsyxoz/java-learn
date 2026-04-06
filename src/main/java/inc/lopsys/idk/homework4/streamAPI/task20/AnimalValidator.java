@@ -5,24 +5,25 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class AnimalValidator {
 
     public static Map<String, String> validateAnimals(List<Animal> animals) {
-        Map<String, String> result = new HashMap<>();
-
-        for (Animal animal : animals) {
-            Set<ValidationError> errors = validateAnimal(animal);
-            if (!errors.isEmpty()) {
+        return animals.stream()
+            .map(animal -> {
+                Set<ValidationError> errors = validateAnimal(animal);
                 String errorMessage = errors.stream()
-                        .map(ValidationError::getMessage)
-                        .reduce((e1, e2) -> e1 + ", " + e2)
-                        .orElse("");
-                result.put(animal.name(), errorMessage);
-            }
-        }
-
-        return result;
+                    .map(ValidationError::getMessage)
+                    .reduce((e1, e2) -> e1 + ", " + e2)
+                    .orElse("");
+                return Map.entry(animal.name(), errorMessage);
+            })
+            .filter(entry -> !entry.getValue().isEmpty())
+            .collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue
+            ));
     }
 
     private static Set<ValidationError> validateAnimal(Animal animal) {

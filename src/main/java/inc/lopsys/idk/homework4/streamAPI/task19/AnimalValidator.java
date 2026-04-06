@@ -5,20 +5,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class AnimalValidator {
 
     public static Map<String, Set<ValidationError>> validateAnimals(List<Animal> animals) {
         Map<String, Set<ValidationError>> result = new HashMap<>();
 
-        for (Animal animal : animals) {
-            Set<ValidationError> errors = validateAnimal(animal);
-            if (!errors.isEmpty()) {
-                result.put(animal.name(), errors);
-            }
-        }
-
-        return result;
+        return animals.stream()
+            .map(animal -> Map.entry(animal.name(), validateAnimal(animal)))
+            .filter(entry -> !entry.getValue().isEmpty())
+            .collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue
+            ));
     }
 
     private static Set<ValidationError> validateAnimal(Animal animal) {
