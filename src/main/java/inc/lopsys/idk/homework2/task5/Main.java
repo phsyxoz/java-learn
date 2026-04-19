@@ -12,6 +12,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.HashMap;
+import java.util.Stack;
 
 public class Main {
 
@@ -27,7 +28,7 @@ public class Main {
             brackets.put(')', '(');
             brackets.put('}', '{');
             brackets.put(']', '[');
-            Deque<Character> stack = new LinkedList<>();
+            Stack<Character> stack = new Stack<>();
 
             if (lengthInput > Math.pow(10, 4) || lengthInput < 1) {
                 throw new IllegalArgumentException("\nОшибка, неверное количество элементов! (От 1 до 10000)");
